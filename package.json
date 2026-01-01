@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "prebuild": "mkdir -p public && cp memory.mp3 public/ 2>/dev/null || echo 'Note: memory.mp3 not found in root, skipping copy.'",
+    "build": "npm run prebuild && tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
