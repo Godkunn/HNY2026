@@ -7,12 +7,14 @@ const FinalCelebration: React.FC = () => {
   const [showSecretButton, setShowSecretButton] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [audioPlaying, setAudioPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.6);
+  // Fixed: Removed unused state 'setVolume'. Volume is now a constant.
+  const volume = 0.6;
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Play memory.mp3
   useEffect(() => {
-    // The build script will move 'memory.mp3' from root to 'public/' so it is accessible at root path.
+    // The build script copies 'memory.mp3' from root to 'public/' automatically.
+    // So we access it at the root path '/memory.mp3'.
     audioRef.current = new Audio('/memory.mp3');
     audioRef.current.loop = true;
     audioRef.current.volume = volume;
@@ -32,7 +34,7 @@ const FinalCelebration: React.FC = () => {
     // Try playing immediately
     playAudio();
 
-    // Also try playing on first click anywhere if autoplay blocked
+    // Fallback: If browser blocked autoplay, play on the very next click anywhere
     const unlockAudio = () => {
       if (audioRef.current && audioRef.current.paused) {
         audioRef.current.play().then(() => setAudioPlaying(true)).catch(() => {});
